@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Planilla de Corteros de Café</title>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#6b3e26"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><meta name="mobile-web-app-capable" content="yes">
+<style>
+:root{--bg:#f6f1ea;--card:#fff;--tx:#2b1d14;--mut:#7a6a5e;--br:#e0d5c8;--pri:#6b3e26;--ok:#1f7a45;--bad:#b3261e;--rh:3mm;--fs:8px;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1a1410;--card:#261d17;--tx:#f1e8df;--mut:#a89888;--br:#3b2f26;--pri:#d9a073;--ok:#5fd18b;--bad:#ff8a80}}
+:root[data-theme="dark"]{--bg:#1a1410;--card:#261d17;--tx:#f1e8df;--mut:#a89888;--br:#3b2f26;--pri:#d9a073;--ok:#5fd18b;--bad:#ff8a80}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px system-ui,sans-serif;padding:12px;max-width:760px;margin:auto}
+body.w{max-width:none}
+h1{font-size:20px;margin:4px 0 8px;color:var(--pri)}h2{font-size:18px;margin:0 0 6px;color:var(--pri)}
+.card{background:var(--card);border:1px solid var(--br);border-radius:12px;padding:12px;margin-bottom:12px}
+label{font-size:12px;color:var(--mut);display:block;margin-bottom:2px}
+input{width:100%;padding:9px;border:1px solid var(--br);border-radius:8px;background:var(--bg);color:var(--tx);font-size:16px}
+.row{display:flex;gap:8px;flex-wrap:wrap}.row>div{flex:1;min-width:120px}
+.days{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0}
+.days .dd{display:flex;gap:3px}.days input{padding:7px 2px;text-align:center;min-width:0}
+.res{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;font-size:14px;margin-top:10px}.res b{display:block;font-size:16px}
+button{padding:10px 14px;border:0;border-radius:8px;background:var(--pri);color:var(--bg);font-size:15px;font-weight:600}
+button.s{background:transparent;color:var(--bad);border:1px solid var(--br);padding:7px 10px;font-size:13px}
+button.p{color:var(--pri)}
+.nav{display:flex;gap:6px;margin-bottom:10px}.nav button{flex:1;background:var(--card);color:var(--tx);border:1px solid var(--br);padding:10px 4px}.nav button.on{background:var(--pri);color:var(--bg)}
+.tot{position:sticky;bottom:0;border:2px solid var(--pri)}
+.big{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.big div{font-size:13px;color:var(--mut)}.big b{display:block;font-size:20px;color:var(--tx)}
+.ok{color:var(--ok)!important}.bad{color:var(--bad)!important}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.tw{overflow-x:auto;border:1px solid var(--br);border-radius:8px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:1100px}
+table.sm{min-width:760px}
+th,td{border:1px solid var(--br);padding:3px 4px;text-align:center;white-space:nowrap}
+th{background:var(--pri);color:var(--bg)}
+td input{padding:4px 1px;font-size:13px;text-align:center;border-radius:4px;min-width:38px}
+td.nm{text-align:left}td.nm input{text-align:left;min-width:120px}td.nu input{min-width:44px}td.ad input{min-width:80px}
+tr.px td,tr.px input{text-decoration:line-through;text-decoration-thickness:1px;color:var(--mut)}
+.hi{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ban{background:var(--pri);color:var(--bg);border-radius:8px;padding:8px;margin-bottom:8px;font-size:14px}
+.ph{display:none}
+@media print{@page{size:portrait;margin:6mm}body{padding:0;max-width:none;background:#fff;color:#000;font-size:11px}.noprint,.nav{display:none!important}
+.ph{display:block;font-size:12px;font-weight:700;margin-bottom:4px;color:#000}
+.tot{position:static;border:1px solid #000;background:#fff;padding:4px;margin-top:4px}.big{grid-template-columns:repeat(4,1fr)}.big b{font-size:12px;color:#000}.big div{color:#000}
+.card{border:0;padding:0;background:#fff}.tw{overflow:visible;border:0}
+table{min-width:0;font-size:var(--fs);line-height:1}thead{display:table-header-group}tr{break-inside:avoid}table:not(.sm) tbody td{height:var(--rh)}
+th{background:#ddd!important;color:#000}th,td{padding:0 1px;border-color:#666}
+td input{border:0;background:transparent;color:#000;padding:0;font-size:var(--fs);height:var(--rh);min-width:0;width:100%;text-align:center;line-height:1;-moz-appearance:textfield;appearance:textfield}
+td.nm input{width:32mm;text-align:left}td.ad input{width:15mm}td.nu input{width:8mm}
+table.sm{font-size:10px;line-height:1.3}table.sm th,table.sm td{padding:2px 3px}
+tr.px td,tr.px input{color:#555}.ok,.bad{color:#000!important}}
+.xi::placeholder{color:#e11d1d;opacity:1;font-weight:900}.xi,td.xc,td.xd{background:rgba(225,29,29,.13)}.xm{color:#e11d1d;font-weight:900}
+@media(prefers-color-scheme:dark){.xi::placeholder,.xm{color:#ff5a5a}}
+textarea{width:100%;min-height:90px;padding:9px;border:1px solid var(--br);border-radius:8px;background:var(--bg);color:var(--tx);font-size:14px}
+#lk{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);z-index:99;display:none;align-items:center;justify-content:center;padding:20px}
+#lk .card{width:100%;max-width:340px;text-align:center}
+@media print{td.xd input{display:none}td.x1::before{content:"✕";font-weight:900}#lk{display:none!important}}
+td.px,td.px input,.pxi,.sk{text-decoration:line-through;text-decoration-thickness:1px;color:var(--mut)}
+@media print{tr.er{display:none}}
+</style></head><body>
+<div id="lk"><div class="card"><h2>🔒 Planilla de Corteros</h2><input id="lkp" type="password" inputmode="numeric" placeholder="Clave" onkeydown="if(event.key=='Enter')unlock()" style="margin-bottom:8px;text-align:center"><div id="lke" class="bad" style="min-height:20px;margin-bottom:6px"></div><button onclick="unlock()" style="width:100%">Entrar</button></div></div>
+<h1>☕ Planilla de Corteros</h1>
+<div class="nav noprint"><button id="bt" onclick="go('t')">Ficha</button><button id="bp" onclick="go('p')">Planilla completa</button><button id="bh" onclick="go('h')">Historial</button><button id="bs" onclick="go('s')" style="flex:.4">⚙</button></div>
+<div class="ph" id="ph"></div>
+<div class="card noprint" id="cfg"><div class="row">
+<div><label>Semana inicia (lunes)</label><input id="ini" type="date" onchange="setIni(this.value)"></div>
+<div><label>Precio por libra (L.)</label><input id="pre" type="number" inputmode="decimal" step="0.01" min="0" placeholder="0.00"></div>
+</div><div id="wk" style="margin-top:8px;font-weight:600;color:var(--pri)"></div></div>
+<div class="card noprint" id="bus" style="display:none"><label>Buscar por número (o nombre)</label><input id="q" oninput="busca()" placeholder="Ej: 105" inputmode="search"></div>
+<div id="mn"></div>
+<div class="row noprint" id="acc" style="margin-bottom:12px"></div>
+<div class="card tot" id="tb"><div class="big">
+<div>Total libras<b id="tl">0</b></div><div>Total ganado (semana)<b id="tg">L. 0.00</b></div>
+<div>Dinero sacado (adelantos)<b id="ta">L. 0.00</b></div><div>Dinero libre (semana)<b id="tf">L. 0.00</b></div>
+</div></div>
+<script>
+var D=["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"],MES=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"],S={ini:"",pre:0,c:[],h:[],pg:[]},K="planilla_corteros_v2",V="t",HV=null,HP=null,SEL=null,HM=null;
+function pd(s){var a=s.split("-");return new Date(+a[0],+a[1]-1,+a[2])}
+function iso(d){return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2)}
+function addD(s,n){var d=pd(s);d.setDate(d.getDate()+n);return iso(d)}
+function lun(d){d=new Date(d);d.setDate(d.getDate()-(d.getDay()+6)%7);return d}
+function fd(s){if(!s)return"—";var d=pd(s);return d.getDate()+" "+MES[d.getMonth()]+" "+d.getFullYear()}
+function wl(s){if(!s)return"";var a=pd(s),b=pd(addD(s,6)),t=""+a.getDate();if(a.getFullYear()!=b.getFullYear())t+=" "+MES[a.getMonth()]+" "+a.getFullYear();else if(a.getMonth()!=b.getMonth())t+=" "+MES[a.getMonth()];return t+" – "+b.getDate()+" "+MES[b.getMonth()]+" "+b.getFullYear()}
+function key(n){return String(n||"").trim().toLowerCase()}
+function mig(c){if(typeof c.d[0]=="number")c.d=c.d.map(function(v){return[v,0]});if(typeof c.a=="number")c.a=c.a?String(c.a):"";if(c.x){c.px=c.d.map(function(p){return[p[0]?c.x:0,p[1]?c.x:0]});c.an=toks(c).length;delete c.x}delete c.p;return c}
+function load(){try{var x=localStorage.getItem(K);if(x){var o=JSON.parse(x);S.ini=o.ini||"";S.pre=o.pre||0;S.c=(o.c||[]).map(mig);S.h=(o.h||[]).map(function(w){w.c=w.c.map(mig);return w});S.pg=o.pg||[]}}catch(e){}
+pad();if(!S.ini)S.ini=iso(lun(new Date()))}
+function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}}
+function nuevo(n){return{n:n||"",nom:"",d:[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],a:""}}
+function m(v){return"L. "+(+v).toLocaleString("es-HN",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;")}
+function sum(c){var t=0;c.d.forEach(function(p){t+=p[0]+p[1]});return t}
+function toks(c){var r=[];String(c.a||"").split(/[+,;\s]+/).forEach(function(x){if(x!=="")r.push(parseFloat(x)||0)});return r}
+function adel(c){var t=0;toks(c).forEach(function(v){t+=v});return t}
+function emp(c){return!(c.n||c.nom||sum(c)||adel(c))}
+function ne(){return S.c.filter(function(c){return!emp(c)}).length}
+function pad(){while(S.c.length<120)S.c.push(nuevo())}
+function pdf(c,j,pp){return!!(c.px&&c.px[j]&&c.px[j][pp])}
+function tc(x,p){var a=[];if(x)a.push("xd x1");if(p)a.push("px");return a.length?' class="'+a.join(" ")+'"':""}
+function imprimir(){if(V=="p")pv(ne());imprimir()}
+function dayIdx(w,pend,first){var r=-1;w.dl.forEach(function(v,j){var q=(pend&&w.pd&&w.pd[j])||[0,0];if(Array.isArray(v)?((v[0]&&!q[0])||(v[1]&&!q[1])):v){if(first){if(r<0)r=j}else r=j}});return r}
+function spanOf(B,pend){if(!B.length||!B[0].ini)return["",""];var a=B[0],b=B[B.length-1],i=dayIdx(a,pend,1),j=dayIdx(b,pend,0);return[addD(a.ini,i<0?0:i),b.ini?addD(b.ini,j<0?6:j):""]}
+function recRow(w){var d=w.dl.map(function(p,j){var q=(w.pd&&w.pd[j])||[0,0];return[q[0]?0:p[0],q[1]?0:p[1]]});return{ini:w.ini,pre:w.pre,dl:d,pd:[],lt:w.l,at:w.a,l:w.l,a:w.a,cur:w.cur,paid:0}}
+function hm(){if(!HM)HM=S.h.map(function(w){var o={};w.c.forEach(function(c){var k=key(c.n);if(k)o[k]=c});return o});return HM}
+function rowv(c,p){var l=sum(c),g=l*p,a=adel(c);return{l:l,g:g,a:a,f:g-a}}
+function fill(L,p){var TL=0,TG=0,TA=0;L.forEach(function(c){var r=rowv(c,p);TL+=r.l;TG+=r.g;TA+=r.a});
+tl.textContent=TL;tg.textContent=m(TG);ta.textContent=m(TA);tf.textContent=m(TG-TA);tf.className=TG-TA<0?"bad":"ok"}
+function calc(){var p=S.pre||0;S.c.forEach(function(c,i){var r=rowv(c,p),e;
+function w(id,v){if(e=document.getElementById(id+i))e.textContent=v}
+w("l",r.l);w("g",m(r.g));w("a",m(r.a));
+if(e=document.getElementById("f"+i)){e.textContent=m(r.f);e.className=r.f<0?"bad":"ok"}});
+fill(S.c,p);save()}
+function set(i,k,v,j,pp){if(j==null)S.c[i][k]=v;else S.c[i].d[j][pp]=+v||0;
+var e=document.querySelector("tr[data-i='"+i+"']");if(e){if(k=="n"||k=="nom"){e.setAttribute("data-n",key(S.c[i].n));e.setAttribute("data-q",S.c[i].nom.toLowerCase())}e.classList.toggle("er",emp(S.c[i]))}calc()}
+function Xs(d,pp,ini,j,closed){var f=-1;for(var k=0;k<d.length;k++)if(d[k][0]||d[k][1]){f=k;break}return f>=0&&j>=f&&!d[j][pp]&&(closed||addD(ini,j)<iso(new Date()))}
+function pin(i,j,pp,v,x,p){return'<input class="'+(x?"xi ":"")+(p?"pxi":"")+'" type="number" inputmode="decimal" min="0" placeholder="'+(x?"x":"")+'" value="'+(v||"")+'" oninput="set('+i+',0,this.value,'+j+','+pp+')">'}
+function go(v){V=v;HV=null;HP=null;render()}
+function setIni(v){if(!v)return;S.ini=iso(lun(pd(v)));ini.value=S.ini;save();render(1)}
+function setPh(t){ph.textContent=t}
+function pv(n){var rh=Math.min(4.5,235/(Math.max(n,1)+3)),fs=Math.max(5.5,Math.min(11,rh*2.8)),s=document.documentElement.style;s.setProperty("--rh",rh.toFixed(2)+"mm");s.setProperty("--fs",fs.toFixed(1)+"px")}
+function busca(){var t=key(q.value);if(V=="p"){document.querySelectorAll("tr[data-i]").forEach(function(e){e.style.display=(!t||e.getAttribute("data-n").indexOf(t)==0||e.getAttribute("data-q").indexOf(t)>-1)?"":"none"});return}fichaView()}
+function fichaView(){var t=key(q.value),el=document.getElementById("mn"),L=[];SEL=null;
+if(!t){el.innerHTML='<div class="card">Escribe el número del cortero para ver su ficha.</div>';return}
+S.c.forEach(function(c,i){if(key(c.n)==t)L.push(i)});
+if(!L.length)S.c.forEach(function(c,i){if(key(c.n).indexOf(t)==0||c.nom.toLowerCase().indexOf(t)>-1)L.push(i)});
+if(!L.length){el.innerHTML='<div class="card">No existe el cortero «'+esc(q.value.trim())+'».<br><br><button onclick="addN()">+ Agregar cortero N° '+esc(q.value.trim())+'</button></div>';return}
+if(L.length>1){el.innerHTML='<div class="card"><label>Varios resultados, elige uno:</label>'+L.slice(0,12).map(function(i){return'<button class="s p" style="margin:3px" onclick="sel('+i+')">'+esc(S.c[i].n)+' · '+esc(S.c[i].nom||"sin nombre")+'</button>'}).join("")+'</div>';return}
+sel(L[0])}
+function sel(i){SEL=i;document.getElementById("mn").innerHTML=ficha(i);calc()}
+function addN(){var n=q.value.trim(),i=-1;S.c.forEach(function(c,k){if(i<0&&emp(c))i=k});if(i<0){S.c.push(nuevo());i=S.c.length-1}S.c[i].n=n;save();fichaView()}
+function ficha(i){var c=S.c[i],T=toks(c),an=Math.min(c.an||0,T.length),any=false;(c.px||[]).forEach(function(q){if(q[0]||q[1])any=true});
+var h='<div class="card"><div class="top"><b>Ficha · Semana del '+wl(S.ini)+'</b><button class="s" onclick="del('+i+')">Quitar</button></div>'+(any?'<div class="ban">Lo tachado ya fue pagado.</div>':'')+
+'<div class="row"><div style="flex:.5"><label>N°</label><input value="'+esc(c.n)+'" inputmode="numeric" oninput="set('+i+',\'n\',this.value)"></div>'+
+'<div><label>Nombre(s) — puede ser un grupo</label><input value="'+esc(c.nom)+'" oninput="set('+i+',\'nom\',this.value)"></div></div>'+
+'<label style="margin-top:8px">Libras por día (pesa 1 y pesa 2)</label><div class="days">';
+c.d.forEach(function(v,j){h+='<div><label>'+D[j]+' '+pd(addD(S.ini,j)).getDate()+'</label><div class="dd">'+pin(i,j,0,v[0],Xs(c.d,0,S.ini,j),pdf(c,j,0))+pin(i,j,1,v[1],Xs(c.d,1,S.ini,j),pdf(c,j,1))+'</div></div>'});
+h+='</div><div class="row"><div><label>Adelantos de la semana (ej: 100+200)</label><input value="'+esc(c.a)+'" oninput="set('+i+',\'a\',this.value)"></div></div>'+
+(an?'<div style="font-size:12px;color:var(--mut);margin-top:4px">Ya pagados: <s>'+T.slice(0,an).join("+")+'</s> · escribe los nuevos al final con +</div>':'')+
+'<div class="res"><div>Libras<b id="l'+i+'"></b></div><div>Ganado<b id="g'+i+'"></b></div><div>Adelantos<b id="a'+i+'"></b></div><div>Libre (semana)<b id="f'+i+'"></b></div></div>'+
+'<div style="margin-top:12px"><button class="s p" style="width:100%;padding:12px" onclick="V=\'e\';render(1)">📄 Estado de cuenta / Pagar</button></div></div>';return h}
+function rowOf(c,pre,ini,cur){var T=toks(c),an=Math.min(c.an||0,T.length),at=0,ap=0,lp=0;T.forEach(function(v,i){at+=v;if(i>=an)ap+=v});
+c.d.forEach(function(p,j){var q=(c.px&&c.px[j])||[0,0];lp+=(q[0]?0:p[0])+(q[1]?0:p[1])});
+return{ini:ini,pre:pre,dl:c.d.map(function(p){return[p[0],p[1]]}),pd:(c.px||[]).map(function(q){return[q[0]?1:0,q[1]?1:0]}),lt:sum(c),at:at,l:lp,a:ap,cur:cur?1:0,paid:(lp==0&&ap==0)?1:0}}
+function stmtRows(k){var R=[],H=hm(),i,x,c=null;
+for(i=S.h.length-1;i>=0;i--){x=H[i][k];if(x&&(sum(x)>0||adel(x)>0))R.push(rowOf(x,S.h[i].pre,S.h[i].ini))}
+S.c.forEach(function(e){if(key(e.n)==k)c=e});if(c&&(sum(c)>0||adel(c)>0))R.push(rowOf(c,S.pre,S.ini,1));return R}
+function tot(R){var t={TL:0,TG:0,TA:0};R.forEach(function(r){t.TL+=r.l;t.TG+=r.l*r.pre;t.TA+=r.a});return t}
+function mkRec(i){var c=S.c[i],R=stmtRows(key(c.n)),P=R.filter(function(r){return!r.paid}),sp=P.length?spanOf(P,true):spanOf(R,false);return{n:c.n,nom:c.nom,rows:R,desde:sp[0],hasta:sp[1]}}
+function stmt(r){var t=tot(r.rows),f=t.TG-t.TA,XX='<b class="xm">✕</b>',h='<h2>☕ Estado de cuenta</h2><div style="font-size:18px"><b>N° '+esc(r.n)+' · '+esc(r.nom||"")+'</b></div>'+
+'<div style="margin:6px 0 10px">Trabajando desde: <b>'+fd(r.desde)+'</b> &nbsp;·&nbsp; Hasta: <b>'+fd(r.hasta)+'</b>'+(r.fecha?'<br>Pagado el: <b>'+r.fecha+'</b>':'')+'</div>';
+if(!r.rows.length)return h+'<div>No tiene semanas registradas.</div>';
+h+='<div class="tw"><table class="sm"><thead><tr><th>Semana</th><th>Precio</th>';D.forEach(function(d){h+='<th>'+d+'</th>'});h+='<th>Libras</th><th>Ganado</th><th>Adelantos</th><th>Libre</th></tr></thead><tbody>';
+r.rows.forEach(function(w){var lt=w.lt==null?w.l:w.lt,at=w.at==null?w.a:w.at,pw=w.paid,L=pw?lt:w.l,A=pw?at:w.a,g=L*w.pre,fi=-1;
+w.dl.forEach(function(v,j){if(fi<0&&(Array.isArray(v)?v[0]||v[1]:v))fi=j});
+h+='<tr'+(pw?' class="px"':'')+'><td style="text-align:left">'+(wl(w.ini)||"Sin fecha")+(w.cur?" (actual)":"")+'</td><td>'+m(w.pre)+'</td>';
+w.dl.forEach(function(v,j){var cl=fi>=0&&j>=fi&&(!w.cur||addD(w.ini,j)<iso(new Date())),q=(w.pd&&w.pd[j])||[0,0],tx;
+if(Array.isArray(v)){var p0=v[0]?(q[0]?'<span class="sk">'+v[0]+'</span>':v[0]):(cl?XX:""),p1=v[1]?(q[1]?'<span class="sk">'+v[1]+'</span>':v[1]):(cl?XX:"");tx=(p0||p1)?(p0||"–")+" · "+(p1||"–"):""}else tx=v||(cl?XX:"");h+='<td>'+tx+'</td>'});
+h+='<td>'+L+'</td><td>'+m(g)+'</td><td>'+m(A)+'</td><td>'+m(g-A)+'</td></tr>'});
+h+='<tr style="font-weight:700"><td colspan="9" style="text-align:right">TOTAL PENDIENTE</td><td>'+t.TL+'</td><td>'+m(t.TG)+'</td><td>'+m(t.TA)+'</td><td>'+m(f)+'</td></tr></tbody></table></div>';
+var np=r.rows.filter(function(w){return!w.paid}).length;
+return h+(np?'<div style="margin-top:12px;font-size:14px;color:var(--mut)">Libre por pagar</div><div class="'+(f<0?"bad":"ok")+'" style="font-size:28px;font-weight:700">'+m(f)+'</div>':'<div class="ok" style="margin-top:12px;font-size:18px;font-weight:700">✔ Todo pagado · sin saldo pendiente</div>')}
+function pagar(){var c=S.c[SEL],k=key(c.n),R=stmtRows(k).filter(function(r){return!r.paid});if(!R.length){alert("No hay nada pendiente para este cortero.");return}
+var t=tot(R);if(!confirm("¿Pagar a N° "+c.n+" "+c.nom+"?\nLibre por pagar: "+m(t.TG-t.TA)+"\nSe tachan las pesas y adelantos que ya están anotados. Lo que anotes después queda pendiente."))return;
+var rec=mkRec(SEL);rec.rows=R.map(recRow);rec.id=Date.now();rec.fecha=new Date().toLocaleString("es-HN");S.pg.unshift(rec);
+var fl=function(e){if(key(e.n)!=k)return;if(!e.px)e.px=e.d.map(function(){return[0,0]});e.d.forEach(function(p,j){for(var z=0;z<2;z++)if(p[z]&&!e.px[j][z])e.px[j][z]=rec.id});if(!e.ah)e.ah={};e.ah[rec.id]=e.an||0;e.an=toks(e).length};
+S.h.forEach(function(w){w.c.forEach(fl)});S.c.forEach(fl);HM=null;save();V="t";render(1)}
+function deshacer(i){if(!confirm("¿Deshacer este pago? Vuelve a contar lo que estaba tachado."))return;var id=S.pg[i].id,fl=function(e){if(e.px)e.px.forEach(function(q){for(var z=0;z<2;z++)if(q[z]==id)q[z]=0});if(e.ah&&e.ah[id]!=null){e.an=e.ah[id];delete e.ah[id]}};
+S.h.forEach(function(w){w.c.forEach(fl)});S.c.forEach(fl);S.pg.splice(i,1);HM=null;save();render()}
+function tabla(L,p,ed,ini){var h='<div class="tw"><table><thead><tr><th rowspan="2">#</th><th rowspan="2">N°</th><th rowspan="2">Nombre</th>';
+D.forEach(function(d,j){h+='<th colspan="2">'+d+(ini?'<br>'+pd(addD(ini,j)).getDate():'')+'</th>'});
+h+='<th rowspan="2">Libras</th><th rowspan="2">Ganado</th><th rowspan="2">Adelantos</th><th rowspan="2">Total adel.</th><th rowspan="2">Libre</th>'+(ed?'<th rowspan="2" class="noprint"></th>':'')+'</tr><tr>';
+D.forEach(function(){h+='<th>1</th><th>2</th>'});h+='</tr></thead><tbody>';
+L.forEach(function(c,i){var r=rowv(c,p);h+='<tr'+(emp(c)?' class="er"':'')+' data-i="'+i+'" data-n="'+esc(key(c.n))+'" data-q="'+esc(c.nom.toLowerCase())+'"><td>'+(i+1)+'</td>';
+h+=ed?'<td class="nu"><input value="'+esc(c.n)+'" oninput="set('+i+',\'n\',this.value)"></td><td class="nm"><input value="'+esc(c.nom)+'" oninput="set('+i+',\'nom\',this.value)"></td>':'<td>'+esc(c.n)+'</td><td class="nm">'+esc(c.nom)+'</td>';
+c.d.forEach(function(v,j){var x0=Xs(c.d,0,ini,j,!ed),x1=Xs(c.d,1,ini,j,!ed),p0=pdf(c,j,0),p1=pdf(c,j,1);
+h+=ed?'<td'+tc(x0,p0)+'>'+pin(i,j,0,v[0],x0,p0)+'</td><td'+tc(x1,p1)+'>'+pin(i,j,1,v[1],x1,p1)+'</td>':(x0?'<td class="xc"><span class="xm">✕</span></td>':'<td'+tc(0,p0)+'>'+(v[0]||"")+'</td>')+(x1?'<td class="xc"><span class="xm">✕</span></td>':'<td'+tc(0,p1)+'>'+(v[1]||"")+'</td>')});
+h+=ed?'<td id="l'+i+'"></td><td id="g'+i+'"></td><td class="ad"><input value="'+esc(c.a)+'" oninput="set('+i+',\'a\',this.value)"></td><td id="a'+i+'"></td><td id="f'+i+'"></td><td class="noprint"><button class="s" onclick="del('+i+')">✕</button></td>':
+'<td>'+r.l+'</td><td>'+m(r.g)+'</td><td>'+esc(c.a)+'</td><td>'+m(r.a)+'</td><td class="'+(r.f<0?"bad":"ok")+'">'+m(r.f)+'</td>';h+='</tr>'});
+return h+'</tbody></table></div>'}
+function hist(){var h='<h2>Semanas cerradas</h2>';if(!S.h.length)h+='<div class="card">Aún no hay semanas cerradas. Usa «✔ Cerrar semana» en la Planilla completa.</div>';
+S.h.forEach(function(w,i){var TL=0,TA=0;w.c.forEach(function(c){TL+=sum(c);TA+=adel(c)});
+h+='<div class="card hi"><div><b>'+(wl(w.ini)?'Semana del '+wl(w.ini):esc(w.sem||w.fecha))+'</b><br><small>'+w.c.length+' corteros · '+TL+' lb · '+m(TL*w.pre)+' ganado · '+m(TA)+' adelantos</small></div><div class="row" style="flex:none;flex-wrap:nowrap"><button onclick="HV='+i+';render()">Ver</button>'+(i==0?'<button class="s p" onclick="reabrir()">Reabrir</button>':'')+'<button class="s" onclick="borrar('+i+')">✕</button></div></div>'});
+h+='<h2 style="margin-top:18px">Pagos realizados</h2>';if(!S.pg.length)h+='<div class="card">Todavía no hay pagos registrados.</div>';
+S.pg.forEach(function(r,i){var t=tot(r.rows);h+='<div class="card hi"><div><b>N° '+esc(r.n)+' · '+esc(r.nom||"")+'</b><br><small>Pagado '+r.fecha+' · '+fd(r.desde)+' a '+fd(r.hasta)+' · '+m(t.TG-t.TA)+'</small></div><div class="row" style="flex:none;flex-wrap:nowrap"><button onclick="HP='+i+';render()">Ver</button><button class="s" onclick="deshacer('+i+')">Deshacer</button></div></div>'});return h}
+function render(keep){var wide=V=="p"||(V=="h"&&HV!=null);document.body.className=wide?"w":"";
+bt.className=(V=="t"||V=="e")?"on":"";bp.className=V=="p"?"on":"";bh.className=(V=="h"&&HV==null&&HP==null)?"on":"";bs.className=V=="s"?"on":"";
+var el=document.getElementById("mn");cfg.style.display=(V=="t"||V=="p")?"":"none";bus.style.display=(V=="t"||V=="p")?"":"none";if(!keep)q.value="";
+acc.style.display="none";acc.innerHTML="";tb.style.display="none";ph.textContent="";ini.value=S.ini;pre.value=S.pre||"";wk.textContent="Semana del "+wl(S.ini);
+var BK='<div class="noprint" style="margin-bottom:8px"><button class="s p" onclick="',PR='<button class="s p" onclick="imprimir()">🖨 Imprimir</button>';
+if(V=="s"){el.innerHTML=ajustes()}
+else if(V=="e"){var c=S.c[SEL];if(!c){V="t";return render()}var rec=mkRec(SEL);el.innerHTML=BK+'V=\'t\';render(1)">← Volver a la ficha</button></div><div class="card">'+stmt(rec)+'</div>';
+acc.style.display="";acc.innerHTML=PR+'<button class="s p" onclick="copiar(mkRec(SEL))">Copiar a Excel</button>'+(rec.rows.some(function(w){return!w.paid})?'<button onclick="pagar()" style="flex:1">✔ Pagar y cerrar cuenta</button>':'')}
+else if(V=="h"&&HP!=null){var r=S.pg[HP];el.innerHTML=BK+'HP=null;render()">← Volver al historial</button></div><div class="card">'+stmt(r)+'</div>';acc.style.display="";acc.innerHTML=PR+'<button class="s p" onclick="copiar(S.pg['+HP+'])">Copiar a Excel</button>'}
+else if(V=="h"&&HV!=null){var w=S.h[HV];el.innerHTML=BK+'HV=null;render()">← Volver al historial</button></div>'+tabla(w.c,w.pre,false,w.ini);pv(w.c.length);fill(w.c,w.pre);tb.style.display="";
+setPh("☕ Planilla de corteros · "+(wl(w.ini)?"Semana del "+wl(w.ini):(w.sem||w.fecha))+" · Precio por libra: "+m(w.pre));acc.style.display="";acc.innerHTML=PR}
+else if(V=="h"){el.innerHTML=hist()}
+else if(V=="t"){fichaView()}
+else{pv(ne());el.innerHTML=tabla(S.c,S.pre,true,S.ini);calc();tb.style.display="";setPh("☕ Planilla de corteros · Semana del "+wl(S.ini)+" · Precio por libra: "+m(S.pre));
+acc.style.display="";acc.innerHTML='<button onclick="add()" style="flex:1">+ Cortero</button>'+PR+'<button class="s p" onclick="copiarP()">Copiar a Excel</button><button class="s p" onclick="cerrar()">✔ Cerrar semana</button>'}}
+function add(){var i=-1;S.c.forEach(function(c,k){if(i<0&&emp(c))i=k});if(i<0){S.c.push(nuevo());render();window.scrollTo(0,document.body.scrollHeight);return}var r=document.querySelector("tr[data-i='"+i+"'] td.nu input");if(r){r.scrollIntoView({block:"center"});r.focus()}}
+function del(i){if(confirm("¿Quitar este cortero de la planilla de esta semana?")){S.c.splice(i,1);pad();if(V=="t")q.value="";render(V=="t"?1:0)}}
+function cerrar(){if(!confirm("¿Cerrar la semana del "+wl(S.ini)+"? Se guarda en el Historial y la planilla queda limpia para la siguiente semana."))return;
+S.h.unshift({ini:S.ini,pre:S.pre,fecha:new Date().toLocaleString("es-HN"),c:JSON.parse(JSON.stringify(S.c.filter(function(c){return!emp(c)})))});
+S.c.forEach(function(c){c.d=nuevo().d;c.a="";delete c.x;delete c.px;delete c.an;delete c.ah});S.ini=addD(S.ini,7);HM=null;save();render()}
+function reabrir(){if(!confirm("Se reabre la última semana cerrada y reemplaza la planilla actual. ¿Continuar?"))return;var w=S.h[0];S.ini=w.ini||S.ini;S.pre=w.pre;S.c=JSON.parse(JSON.stringify(w.c));pad();S.h.splice(0,1);HM=null;V="p";HV=null;save();render()}
+function borrar(i){if(confirm("¿Eliminar esta semana del historial? Cambiarán los estados de cuenta de los corteros.")){S.h.splice(i,1);HM=null;save();render()}}
+function cp(t){try{navigator.clipboard.writeText(t).then(function(){alert("Copiado. Pégalo en Excel o Sheets.")},function(){alert("No se pudo copiar.")})}catch(e){alert("No se pudo copiar.")}}
+function copiarP(){var t="N°\tNombre\t";D.forEach(function(d){t+=d+" 1\t"+d+" 2\t"});t+="Libras\tGanado\tAdelantos\tTotal adel.\tLibre\n";
+S.c.forEach(function(c){var r=rowv(c,S.pre),x=[];c.d.forEach(function(v){x.push(v[0],v[1])});t+=c.n+"\t"+c.nom+"\t"+x.join("\t")+"\t"+r.l+"\t"+r.g+"\t"+c.a+"\t"+r.a+"\t"+r.f+"\n"});cp(t)}
+function copiar(r){var t="Semana\tPrecio\t"+D.join("\t")+"\tLibras\tGanado\tAdelantos\tLibre\n";
+r.rows.forEach(function(w){if(w.paid)return;var g=w.l*w.pre;t+=(wl(w.ini)||"Sin fecha")+"\t"+w.pre+"\t"+w.dl.map(function(v){return Array.isArray(v)?v[0]+v[1]:v}).join("\t")+"\t"+w.l+"\t"+g+"\t"+w.a+"\t"+(g-w.a)+"\n"});cp(t)}
+var LK="planilla_lock_v1",lastHide=0;
+function bk(t,bad){var e=document.getElementById("bkm");if(e){e.textContent=t;e.className=bad?"bad":"ok"}}
+function ajustes(){var L=!!lockHash();
+return'<div class="card"><h2>💾 Respaldo</h2><div style="font-size:14px;color:var(--mut);margin-bottom:8px">Copia de TODO (corteros, semanas cerradas y pagos). Mándala por WhatsApp o guárdala en tu teléfono. También sirve para pasar los datos a otro aparato.</div><div class="row"><button onclick="expF()">Descargar respaldo</button><button class="s p" onclick="expC()">Copiar respaldo</button></div>'+
+'<hr style="border:0;border-top:1px solid var(--br);margin:14px 0"><div style="font-size:14px;margin-bottom:6px"><b>Restaurar</b> (reemplaza todo lo actual)</div><input type="file" accept=".json,.txt" onchange="impF(this)"><div style="margin:8px 0 4px;font-size:13px;color:var(--mut)">o pega aquí el respaldo copiado:</div><textarea id="impt" placeholder="Pega el respaldo aquí"></textarea><div style="margin-top:6px"><button class="s p" onclick="restore(document.getElementById(\'impt\').value)">Restaurar desde lo pegado</button></div><div id="bkm" style="margin-top:8px;font-weight:600"></div></div>'+
+'<div class="card"><h2>🔒 Clave</h2><div style="font-size:14px;color:var(--mut);margin-bottom:8px">'+(L?'La clave está activa: se pide al abrir y después de 5 minutos fuera de la página. ':'Sin clave todavía. ')+'Es un candado sencillo para que otros no abran ni cambien datos desde este aparato. Si olvidas la clave, hay que borrar los datos del navegador y restaurar un respaldo.</div>'+
+'<input id="nc" type="password" inputmode="numeric" placeholder="'+(L?'Nueva clave':'Clave (mínimo 4)')+'" style="margin-bottom:8px"><div class="row"><button onclick="setClave()">'+(L?'Cambiar clave':'Poner clave')+'</button>'+(L?'<button class="s p" onclick="showLock()">🔒 Bloquear ahora</button><button class="s" onclick="quitaClave()">Quitar clave</button>':'')+'</div></div>'}
+function snap(){return JSON.stringify({app:"planilla-corteros",v:2,fecha:new Date().toISOString(),data:S})}
+function dlBlob(n,t){var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([t],{type:"application/json"}));a.download=n;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500)}
+async function expF(){try{if(!window.claude){dlBlob("respaldo-planilla-"+iso(new Date())+".json",snap());bk("Respaldo descargado. Búscalo en Descargas.");return}var d=await claude.use("downloads");if(!d){bk("Aquí no se puede descargar. Usa «Copiar respaldo».",1);return}
+await d.save({filename:"respaldo-planilla-"+iso(new Date())+".json",data:snap()});bk("Respaldo guardado.")}catch(e){bk(e&&e.code=="declined"?"Cancelaste la descarga.":"No se pudo descargar. Usa «Copiar respaldo».",1)}}
+function expC(){try{navigator.clipboard.writeText(snap()).then(function(){bk("Copiado. Pégalo en WhatsApp o Notas.")},function(){bk("No se pudo copiar.",1)})}catch(e){bk("No se pudo copiar.",1)}}
+function impF(inp){var f=inp.files&&inp.files[0];if(!f)return;var r=new FileReader();r.onload=function(){restore(String(r.result))};r.onerror=function(){bk("No se pudo leer el archivo.",1)};r.readAsText(f)}
+function restore(t){var o;try{o=JSON.parse(t);if(o&&o.data)o=o.data;if(!o||!Array.isArray(o.c)||!Array.isArray(o.h))throw 0}catch(e){bk("Ese respaldo no es válido.",1);return}
+if(!confirm("Se reemplaza TODO lo que hay ahora ("+S.c.length+" corteros, "+S.h.length+" semanas cerradas) por el respaldo ("+o.c.length+" corteros, "+o.h.length+" semanas). ¿Continuar?"))return;
+S.ini=o.ini||S.ini;S.pre=o.pre||0;S.c=o.c.map(mig);S.h=o.h.map(function(w){w.c=w.c.map(mig);return w});S.pg=o.pg||[];pad();HM=null;save();bk("Respaldo restaurado: "+S.c.length+" corteros y "+S.h.length+" semanas.")}
+function lockHash(){try{return localStorage.getItem(LK)||""}catch(e){return""}}
+async function hp(p){var s="cortero-sal:"+p;try{var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(function(x){return("0"+x.toString(16)).slice(-2)}).join("")}catch(e){var h=5381;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return"d"+h}}
+function showLock(){if(!lockHash())return;lk.style.display="flex";lkp.value="";lke.textContent="";setTimeout(function(){lkp.focus()},50)}
+async function unlock(){var h=await hp(lkp.value);if(h==lockHash()){lk.style.display="none";lkp.value=""}else{lke.textContent="Clave incorrecta";lkp.value=""}}
+async function setClave(){var v=nc.value.trim();if(v.length<4){alert("La clave debe tener al menos 4 caracteres.");return}try{localStorage.setItem(LK,await hp(v))}catch(e){alert("No se pudo guardar la clave en este aparato.");return}alert("Clave guardada.");render()}
+function quitaClave(){if(!confirm("¿Quitar la clave?"))return;try{localStorage.removeItem(LK)}catch(e){}render()}
+window.addEventListener("beforeprint",function(){if(V=="p")pv(ne())});
+document.addEventListener("visibilitychange",function(){if(document.hidden)lastHide=Date.now();else if(lastHide&&Date.now()-lastHide>300000)showLock()});
+pre.oninput=function(){S.pre=+this.value||0;if(V=="p"){calc();setPh("☕ Planilla de corteros · Semana del "+wl(S.ini)+" · Precio por libra: "+m(S.pre))}else if(SEL!=null)calc();else save()};
+load();showLock();render();
+if("serviceWorker" in navigator&&location.protocol.indexOf("http")==0)navigator.serviceWorker.register("sw.js").catch(function(){});
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
+</script></body></html>
