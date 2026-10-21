@@ -195,7 +195,9 @@ else if(V=="t"){fichaView()}
 else{pv(ne());el.innerHTML=tabla(S.c,S.pre,true,S.ini);calc();tb.style.display="";setPh("☕ Planilla de corteros · Semana del "+wl(S.ini)+" · Precio por libra: "+m(S.pre));
 acc.style.display="";acc.innerHTML='<button onclick="add()" style="flex:1">+ Cortero</button>'+PR+'<button class="s p" onclick="pdfP(1)">📤 Compartir PDF</button><button class="s p" onclick="pdfP(0)">⬇ Descargar PDF</button><button class="s p" onclick="cerrar()">✔ Cerrar semana</button>'}}
 function add(){var i=-1;S.c.forEach(function(c,k){if(i<0&&emp(c))i=k});if(i<0){S.c.push(nuevo());render();window.scrollTo(0,document.body.scrollHeight);return}var r=document.querySelector("tr[data-i='"+i+"'] td.nu input");if(r){r.scrollIntoView({block:"center"});r.focus()}}
-function del(i){if(confirm("¿Quitar este cortero de la planilla de esta semana?")){S.c.splice(i,1);pad();if(V=="t")q.value="";render(V=="t"?1:0)}}
+function del(i){var c=S.c[i],k=key(c.n),hp=k?stmtRows(k).filter(function(r){return!r.paid&&!r.cur}):[],t=tot(hp),msg="¿Quitar a N° "+(c.n||"")+" "+(c.nom||"")+" de la planilla? La casilla queda en blanco y se borran sus pesas y adelantos de esta semana.";
+if(hp.length&&t.TG-t.TA!=0)msg+="\n\nOJO: tiene semanas anteriores sin pagar ("+m(t.TG-t.TA)+"). Si usas ese número para otra persona, se mezclaría su historial. Mejor págalo primero.";
+if(!confirm(msg))return;S.c[i]=nuevo();HM=null;save();if(V=="t")q.value="";render(V=="t"?1:0)}
 function cerrar(){if(!confirm("¿Cerrar la semana del "+wl(S.ini)+"? Se guarda en el Historial y la planilla queda limpia para la siguiente semana."))return;
 S.h.unshift({ini:S.ini,pre:S.pre,fecha:new Date().toLocaleString("es-HN"),c:JSON.parse(JSON.stringify(S.c.filter(function(c){return!emp(c)})))});
 S.c.forEach(function(c){c.d=nuevo().d;c.a="";delete c.x;delete c.px;delete c.an;delete c.ah});S.ini=addD(S.ini,7);HM=null;save();render()}
