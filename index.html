@@ -176,9 +176,9 @@ h+=ed?'<td id="l'+i+'"></td><td id="g'+i+'"></td><td class="ad"><input value="'+
 return h+'</tbody></table></div>'}
 function hist(){var h='<h2>Semanas cerradas</h2>';if(!S.h.length)h+='<div class="card">Aún no hay semanas cerradas. Usa «✔ Cerrar semana» en la Planilla completa.</div>';
 S.h.forEach(function(w,i){var TL=0,TA=0;w.c.forEach(function(c){TL+=sum(c);TA+=adel(c)});
-h+='<div class="card hi"><div><b>'+(wl(w.ini)?'Semana del '+wl(w.ini):esc(w.sem||w.fecha))+'</b><br><small>'+w.c.length+' corteros · '+TL+' lb · '+m(TL*w.pre)+' ganado · '+m(TA)+' adelantos</small></div><div class="row" style="flex:none;flex-wrap:nowrap"><button onclick="HV='+i+';render()">Ver</button>'+(i==0?'<button class="s p" onclick="reabrir()">Reabrir</button>':'')+'<button class="s" onclick="borrar('+i+')">✕</button></div></div>'});
+h+='<div class="card hi"><div><b>'+(wl(w.ini)?'Semana del '+wl(w.ini):esc(w.sem||w.fecha))+'</b><br><small>'+w.c.length+' corteros · '+TL+' lb · '+m(TL*w.pre)+' ganado · '+m(TA)+' adelantos</small></div><div class="row" style="flex:none;flex-wrap:nowrap"><button onclick="HV='+i+';render()">Ver</button><button class="s p" onclick="pdfH('+i+',1)">📤</button>'+(i==0?'<button class="s p" onclick="reabrir()">Reabrir</button>':'')+'<button class="s" onclick="borrar('+i+')">✕</button></div></div>'});
 h+='<h2 style="margin-top:18px">Pagos realizados</h2>';if(!S.pg.length)h+='<div class="card">Todavía no hay pagos registrados.</div>';
-S.pg.forEach(function(r,i){var t=tot(r.rows);h+='<div class="card hi"><div><b>N° '+esc(r.n)+' · '+esc(r.nom||"")+'</b><br><small>Pagado '+r.fecha+' · '+fd(r.desde)+' a '+fd(r.hasta)+' · '+m(t.TG-t.TA)+'</small></div><div class="row" style="flex:none;flex-wrap:nowrap"><button onclick="HP='+i+';render()">Ver</button><button class="s" onclick="deshacer('+i+')">Deshacer</button></div></div>'});return h}
+S.pg.forEach(function(r,i){var t=tot(r.rows);h+='<div class="card hi"><div><b>N° '+esc(r.n)+' · '+esc(r.nom||"")+'</b><br><small>Pagado '+r.fecha+' · '+fd(r.desde)+' a '+fd(r.hasta)+' · '+m(t.TG-t.TA)+'</small></div><div class="row" style="flex:none;flex-wrap:nowrap"><button onclick="HP='+i+';render()">Ver</button><button class="s p" onclick="pdfR('+i+',1)">📤</button><button class="s" onclick="deshacer('+i+')">Deshacer</button></div></div>'});return h}
 function render(keep){var wide=V=="p"||(V=="h"&&HV!=null);document.body.className=wide?"w":"";
 bt.className=(V=="t"||V=="e")?"on":"";bp.className=V=="p"?"on":"";bh.className=(V=="h"&&HV==null&&HP==null)?"on":"";bs.className=V=="s"?"on":"";
 var el=document.getElementById("mn");cfg.style.display=(V=="t"||V=="p")?"":"none";bus.style.display=(V=="t"||V=="p")?"":"none";if(!keep)q.value="";
@@ -186,14 +186,14 @@ acc.style.display="none";acc.innerHTML="";tb.style.display="none";ph.textContent
 var BK='<div class="noprint" style="margin-bottom:8px"><button class="s p" onclick="',PR='<button class="s p" onclick="imprimir()">🖨 Imprimir</button>';
 if(V=="s"){el.innerHTML=ajustes()}
 else if(V=="e"){var c=S.c[SEL];if(!c){V="t";return render()}var rec=mkRec(SEL);el.innerHTML=BK+'V=\'t\';render(1)">← Volver a la ficha</button></div><div class="card">'+stmt(rec)+'</div>';
-acc.style.display="";acc.innerHTML=PR+'<button class="s p" onclick="copiar(mkRec(SEL))">Copiar a Excel</button>'+(rec.rows.some(function(w){return!w.paid})?'<button onclick="pagar()" style="flex:1">✔ Pagar y cerrar cuenta</button>':'')}
-else if(V=="h"&&HP!=null){var r=S.pg[HP];el.innerHTML=BK+'HP=null;render()">← Volver al historial</button></div><div class="card">'+stmt(r)+'</div>';acc.style.display="";acc.innerHTML=PR+'<button class="s p" onclick="copiar(S.pg['+HP+'])">Copiar a Excel</button>'}
+acc.style.display="";acc.innerHTML=PR+'<button class="s p" onclick="pdfE(1)">📤 Compartir PDF</button><button class="s p" onclick="pdfE(0)">⬇ Descargar PDF</button>'+(rec.rows.some(function(w){return!w.paid})?'<button onclick="pagar()" style="flex:1">✔ Pagar y cerrar cuenta</button>':'')}
+else if(V=="h"&&HP!=null){var r=S.pg[HP];el.innerHTML=BK+'HP=null;render()">← Volver al historial</button></div><div class="card">'+stmt(r)+'</div>';acc.style.display="";acc.innerHTML=PR+'<button class="s p" onclick="pdfR('+HP+',1)">📤 Compartir PDF</button><button class="s p" onclick="pdfR('+HP+',0)">⬇ Descargar PDF</button>'}
 else if(V=="h"&&HV!=null){var w=S.h[HV];el.innerHTML=BK+'HV=null;render()">← Volver al historial</button></div>'+tabla(w.c,w.pre,false,w.ini);pv(w.c.length);fill(w.c,w.pre);tb.style.display="";
-setPh("☕ Planilla de corteros · "+(wl(w.ini)?"Semana del "+wl(w.ini):(w.sem||w.fecha))+" · Precio por libra: "+m(w.pre));acc.style.display="";acc.innerHTML=PR}
+setPh("☕ Planilla de corteros · "+(wl(w.ini)?"Semana del "+wl(w.ini):(w.sem||w.fecha))+" · Precio por libra: "+m(w.pre));acc.style.display="";acc.innerHTML=PR+'<button class="s p" onclick="pdfH(HV,1)">📤 Compartir PDF</button><button class="s p" onclick="pdfH(HV,0)">⬇ Descargar PDF</button>'}
 else if(V=="h"){el.innerHTML=hist()}
 else if(V=="t"){fichaView()}
 else{pv(ne());el.innerHTML=tabla(S.c,S.pre,true,S.ini);calc();tb.style.display="";setPh("☕ Planilla de corteros · Semana del "+wl(S.ini)+" · Precio por libra: "+m(S.pre));
-acc.style.display="";acc.innerHTML='<button onclick="add()" style="flex:1">+ Cortero</button>'+PR+'<button class="s p" onclick="copiarP()">Copiar a Excel</button><button class="s p" onclick="cerrar()">✔ Cerrar semana</button>'}}
+acc.style.display="";acc.innerHTML='<button onclick="add()" style="flex:1">+ Cortero</button>'+PR+'<button class="s p" onclick="pdfP(1)">📤 Compartir PDF</button><button class="s p" onclick="pdfP(0)">⬇ Descargar PDF</button><button class="s p" onclick="cerrar()">✔ Cerrar semana</button>'}}
 function add(){var i=-1;S.c.forEach(function(c,k){if(i<0&&emp(c))i=k});if(i<0){S.c.push(nuevo());render();window.scrollTo(0,document.body.scrollHeight);return}var r=document.querySelector("tr[data-i='"+i+"'] td.nu input");if(r){r.scrollIntoView({block:"center"});r.focus()}}
 function del(i){if(confirm("¿Quitar este cortero de la planilla de esta semana?")){S.c.splice(i,1);pad();if(V=="t")q.value="";render(V=="t"?1:0)}}
 function cerrar(){if(!confirm("¿Cerrar la semana del "+wl(S.ini)+"? Se guarda en el Historial y la planilla queda limpia para la siguiente semana."))return;
@@ -209,14 +209,13 @@ r.rows.forEach(function(w){if(w.paid)return;var g=w.l*w.pre;t+=(wl(w.ini)||"Sin 
 var LK="planilla_lock_v1",lastHide=0;
 function bk(t,bad){var e=document.getElementById("bkm");if(e){e.textContent=t;e.className=bad?"bad":"ok"}}
 function ajustes(){var L=!!lockHash();
-return'<div class="card"><h2>💾 Respaldo</h2><div style="font-size:14px;color:var(--mut);margin-bottom:8px">Copia de TODO (corteros, semanas cerradas y pagos). Mándala por WhatsApp o guárdala en tu teléfono. También sirve para pasar los datos a otro aparato.</div><div class="row"><button onclick="expF()">Descargar respaldo</button><button class="s p" onclick="expC()">Copiar respaldo</button></div>'+
+return'<div class="card"><h2>💾 Respaldo</h2><div style="font-size:14px;color:var(--mut);margin-bottom:8px">Archivo con TODO (corteros, semanas cerradas y pagos). Se manda por WhatsApp como archivo, no como texto. No es para leer: sirve para recuperar los datos o pasarlos a otro teléfono. Para leer o imprimir usa los PDF de la Planilla y del Estado de cuenta.</div><div class="row"><button onclick="expF(1)">📤 Compartir respaldo</button><button class="s p" onclick="expF(0)">⬇ Descargar respaldo</button></div>'+
 '<hr style="border:0;border-top:1px solid var(--br);margin:14px 0"><div style="font-size:14px;margin-bottom:6px"><b>Restaurar</b> (reemplaza todo lo actual)</div><input type="file" accept=".json,.txt" onchange="impF(this)"><div style="margin:8px 0 4px;font-size:13px;color:var(--mut)">o pega aquí el respaldo copiado:</div><textarea id="impt" placeholder="Pega el respaldo aquí"></textarea><div style="margin-top:6px"><button class="s p" onclick="restore(document.getElementById(\'impt\').value)">Restaurar desde lo pegado</button></div><div id="bkm" style="margin-top:8px;font-weight:600"></div></div>'+
 '<div class="card"><h2>🔒 Clave</h2><div style="font-size:14px;color:var(--mut);margin-bottom:8px">'+(L?'La clave está activa: se pide al abrir y después de 5 minutos fuera de la página. ':'Sin clave todavía. ')+'Es un candado sencillo para que otros no abran ni cambien datos desde este aparato. Si olvidas la clave, hay que borrar los datos del navegador y restaurar un respaldo.</div>'+
 '<input id="nc" type="password" inputmode="numeric" placeholder="'+(L?'Nueva clave':'Clave (mínimo 4)')+'" style="margin-bottom:8px"><div class="row"><button onclick="setClave()">'+(L?'Cambiar clave':'Poner clave')+'</button>'+(L?'<button class="s p" onclick="showLock()">🔒 Bloquear ahora</button><button class="s" onclick="quitaClave()">Quitar clave</button>':'')+'</div></div>'}
 function snap(){return JSON.stringify({app:"planilla-corteros",v:2,fecha:new Date().toISOString(),data:S})}
 function dlBlob(n,t){var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([t],{type:"application/json"}));a.download=n;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500)}
-async function expF(){try{if(!window.claude){dlBlob("respaldo-planilla-"+iso(new Date())+".json",snap());bk("Respaldo descargado. Búscalo en Descargas.");return}var d=await claude.use("downloads");if(!d){bk("Aquí no se puede descargar. Usa «Copiar respaldo».",1);return}
-await d.save({filename:"respaldo-planilla-"+iso(new Date())+".json",data:snap()});bk("Respaldo guardado.")}catch(e){bk(e&&e.code=="declined"?"Cancelaste la descarga.":"No se pudo descargar. Usa «Copiar respaldo».",1)}}
+async function expF(sh){var m=await entregar(new Blob([snap()],{type:"text/plain"}),"respaldo-planilla-"+iso(new Date())+".txt",sh);bk(m||(sh?"Listo.":"Respaldo guardado."))}
 function expC(){try{navigator.clipboard.writeText(snap()).then(function(){bk("Copiado. Pégalo en WhatsApp o Notas.")},function(){bk("No se pudo copiar.",1)})}catch(e){bk("No se pudo copiar.",1)}}
 function impF(inp){var f=inp.files&&inp.files[0];if(!f)return;var r=new FileReader();r.onload=function(){restore(String(r.result))};r.onerror=function(){bk("No se pudo leer el archivo.",1)};r.readAsText(f)}
 function restore(t){var o;try{o=JSON.parse(t);if(o&&o.data)o=o.data;if(!o||!Array.isArray(o.c)||!Array.isArray(o.h))throw 0}catch(e){bk("Ese respaldo no es válido.",1);return}
@@ -230,6 +229,87 @@ async function setClave(){var v=nc.value.trim();if(v.length<4){alert("La clave d
 function quitaClave(){if(!confirm("¿Quitar la clave?"))return;try{localStorage.removeItem(LK)}catch(e){}render()}
 window.addEventListener("beforeprint",function(){if(V=="p")pv(ne())});
 document.addEventListener("visibilitychange",function(){if(document.hidden)lastHide=Date.now();else if(lastHide&&Date.now()-lastHide>300000)showLock()});
+var HW=[278,278,355,556,556,889,667,191,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,278,278,584,584,584,556,1015,667,667,722,722,667,611,778,722,278,500,667,556,833,722,778,667,778,722,667,611,722,667,944,667,667,611,278,278,278,469,556,333,556,556,500,556,556,278,556,556,222,222,500,222,833,556,556,556,556,333,500,278,556,500,722,500,500,500,334,260,334,584];
+var BR=[107,62,38],GR=[120,120,120],RD=[225,29,29],GN=[31,122,69],LG=[200,190,180],WH=[255,255,255];
+function tw(s,sz,b){var t=0;String(s).split("").forEach(function(ch){var c=ch.charCodeAt(0);t+=(c>=32&&c<=126)?HW[c-32]:(c==183?278:556)});return t*sz/1000*(b?1.07:1)}
+function fit(s,w,fs){s=String(s||"");while(s.length&&tw(s,fs)>w-3)s=s.slice(0,-1);return s}
+function f2(v){return(+v).toLocaleString("es-HN",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function pe(s){var o="";String(s).split("").forEach(function(ch){var c=ch.charCodeAt(0);if(c==8211||c==8212)c=150;else if(c>255)c=63;if(c==40||c==41||c==92)o+="\\"+String.fromCharCode(c);else if(c<32)o+=" ";else o+=String.fromCharCode(c)});return o}
+function PDF(w,h){this.w=w;this.h=h;this.pg=[];this.np()}
+PDF.prototype={
+np:function(){this.c=[];this.pg.push(this.c)},
+col:function(c){return c.map(function(v){return(v/255).toFixed(3)}).join(" ")},
+rect:function(x,y,w,h,f){this.c.push(this.col(f)+" rg "+x.toFixed(2)+" "+(this.h-y-h).toFixed(2)+" "+w.toFixed(2)+" "+h.toFixed(2)+" re f")},
+line:function(x1,y1,x2,y2,c,lw){this.c.push((lw||.5)+" w "+this.col(c)+" RG "+x1.toFixed(2)+" "+(this.h-y1).toFixed(2)+" m "+x2.toFixed(2)+" "+(this.h-y2).toFixed(2)+" l S")},
+txt:function(x,y,s,sz,b,c){this.c.push("BT /"+(b?"F2":"F1")+" "+sz+" Tf "+this.col(c||[0,0,0])+" rg "+x.toFixed(2)+" "+(this.h-y).toFixed(2)+" Td ("+pe(s)+") Tj ET")},
+out:function(){var o=[],n=this.pg.length,i,k=[];
+o.push("<< /Type /Catalog /Pages 2 0 R >>");for(i=0;i<n;i++)k.push((5+2*i)+" 0 R");
+o.push("<< /Type /Pages /Kids ["+k.join(" ")+"] /Count "+n+" >>");
+o.push("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>");
+o.push("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>");
+for(i=0;i<n;i++){var st=this.pg[i].join("\n");
+o.push("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 "+this.w+" "+this.h+"] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents "+(6+2*i)+" 0 R >>");
+o.push("<< /Length "+st.length+" >>\nstream\n"+st+"\nendstream")}
+var s="%PDF-1.4\n",x=[];o.forEach(function(b,j){x.push(s.length);s+=(j+1)+" 0 obj\n"+b+"\nendobj\n"});
+var xr=s.length;s+="xref\n0 "+(o.length+1)+"\n0000000000 65535 f \n";x.forEach(function(p){s+=("0000000000"+p).slice(-10)+" 00000 n \n"});
+s+="trailer\n<< /Size "+(o.length+1)+" /Root 1 0 R >>\nstartxref\n"+xr+"\n%%EOF";
+var u=new Uint8Array(s.length);for(i=0;i<s.length;i++)u[i]=s.charCodeAt(i)&255;return u}};
+function pieDePag(P){var f=new Date().toLocaleString("es-HN");P.pg.forEach(function(c,k){P.c=c;P.txt(22,P.h-12,"Generado el "+f+"   ·   Página "+(k+1)+" de "+P.pg.length,6.5,0,GR)})}
+function planillaPdf(L,pre,ini,closed){var P=new PDF(612,792),M=22,n=L.length,TL=0,TG=0,TA=0,cw=[14,22,86],i,xs=[],x=M,XE,rh=13,idx=0,first=true;
+for(i=0;i<14;i++)cw.push(19);cw.push(28,42,62,42);cw.forEach(function(w){xs.push(x);x+=w});XE=x;
+L.forEach(function(c){var r=rowv(c,pre);TL+=r.l;TG+=r.g;TA+=r.a});
+function cen(ci,s,y,fs,b,col){P.txt(xs[ci]+(cw[ci]-tw(s,fs,b))/2,y,s,fs,b,col)}
+function th(y){P.rect(M,y,XE-M,18,BR);["#","N°","Nombre"].forEach(function(t,k){P.txt(xs[k]+2,y+12,t,7,1,WH)});
+D.forEach(function(d,j){var t=d+(ini?" "+pd(addD(ini,j)).getDate():""),wi=cw[3+2*j]+cw[4+2*j];P.txt(xs[3+2*j]+(wi-tw(t,6,1))/2,y+7,t,6,1,WH);cen(3+2*j,"1",y+16,6.5,1,WH);cen(4+2*j,"2",y+16,6.5,1,WH)});
+["Libras","Ganado","Adelantos","Libre"].forEach(function(t,k){cen(17+k,t,y+12,7,1,WH)});return y+18}
+function top(f){P.txt(M,M+12,"Planilla de corteros",15,1,BR);
+P.txt(M,M+26,(ini?"Semana del "+wl(ini):"")+"   ·   Precio por libra: L. "+f2(pre),9,0,[40,40,40]);
+if(f){P.txt(M,M+39,"Total libras: "+TL+"   ·   Ganado: L. "+f2(TG)+"   ·   Adelantos: L. "+f2(TA)+"   ·   Libre: L. "+f2(TG-TA),9,1,[40,40,40]);return M+46}return M+32}
+function row(c,k,y){var fs=Math.min(8,rh*.78),by=y+rh/2+fs*.35,r=rowv(c,pre);P.line(M,y+rh,XE,y+rh,LG,.3);
+cen(0,String(k+1),by,fs-.5,0,GR);P.txt(xs[1]+2,by,fit(c.n,cw[1],fs),fs,1);P.txt(xs[2]+2,by,fit(c.nom,cw[2],fs),fs,0);
+c.d.forEach(function(v,j){for(var q=0;q<2;q++){var ci=3+2*j+q,val=v[q];
+if(val){var s=String(val);cen(ci,s,by,fs,0);if(pdf(c,j,q)){var t=tw(s,fs),sx=xs[ci]+(cw[ci]-t)/2;P.line(sx-.5,by-fs*.3,sx+t+.5,by-fs*.3,GR,.6)}}
+else if(Xs(c.d,q,ini,j,closed))cen(ci,"X",by,fs,1,RD)}});
+cen(17,String(r.l),by,fs,0);cen(18,f2(r.g),by,fs,0);P.txt(xs[19]+2,by,fit(c.a,cw[19],fs),fs,0);cen(20,f2(r.f),by,fs,1,r.f<0?RD:[0,0,0])}
+while(first||idx<n){if(!first)P.np();var y=th(top(first)),y0=y,avail=792-M-16-y;if(first)rh=Math.max(6.2,Math.min(13,avail/Math.max(n,1)));
+var end=Math.min(n,idx+Math.floor(avail/rh));for(;idx<end;idx++){row(L[idx],idx,y);y+=rh}
+xs.concat([XE]).forEach(function(vx){P.line(vx,y0-18,vx,y,LG,.3)});P.line(M,y0,XE,y0,LG,.3);first=false;if(!n)break}
+pieDePag(P);return P.out()}
+function estadoPdf(r){var P=new PDF(612,792),M=22,t=tot(r.rows),f=t.TG-t.TA,cw=[92,34,38,38,38,38,38,38,38,30,44,44,44],xs=[],x=M,XE,rh=17,y,np=r.rows.filter(function(w){return!w.paid}).length;
+cw.forEach(function(w){xs.push(x);x+=w});XE=x;
+function cen(ci,s,yy,fs,b,col){P.txt(xs[ci]+(cw[ci]-tw(s,fs,b))/2,yy,s,fs,b,col)}
+function th(yy){P.rect(M,yy,XE-M,16,BR);P.txt(xs[0]+2,yy+11,"Semana",7.5,1,WH);cen(1,"Precio",yy+11,7.5,1,WH);D.forEach(function(d,j){cen(2+j,d,yy+11,7.5,1,WH)});
+["Libras","Ganado","Adelantos","Libre"].forEach(function(s,k){cen(9+k,s,yy+11,7.5,1,WH)});return yy+16}
+P.txt(M,M+14,"Estado de cuenta",16,1,BR);P.txt(M,M+34,"N° "+r.n+"  -  "+(r.nom||""),13,1);
+P.txt(M,M+50,"Trabajando desde: "+fd(r.desde)+"      Hasta: "+fd(r.hasta)+(r.fecha?"      Pagado el: "+r.fecha:""),9,0,[40,40,40]);
+if(!r.rows.length){P.txt(M,M+74,"No tiene semanas registradas.",10,0);pieDePag(P);return P.out()}
+y=th(M+60);var y0=y;
+r.rows.forEach(function(w){if(y+rh>792-M-70){xs.concat([XE]).forEach(function(vx){P.line(vx,y0-16,vx,y,LG,.3)});P.np();y=th(M+10);y0=y}
+var lt=w.lt==null?w.l:w.lt,at=w.at==null?w.a:w.at,pw=w.paid,L=pw?lt:w.l,A=pw?at:w.a,g=L*w.pre,fi=-1,by=y+rh/2+2.5,fs=7;
+w.dl.forEach(function(v,j){if(fi<0&&(Array.isArray(v)?v[0]||v[1]:v))fi=j});
+P.line(M,y+rh,XE,y+rh,LG,.3);P.txt(xs[0]+2,by,fit((wl(w.ini)||"Sin fecha")+(w.cur?" (actual)":""),cw[0],fs),fs,0);cen(1,f2(w.pre),by,fs,0);
+w.dl.forEach(function(v,j){var cl=fi>=0&&j>=fi&&(!w.cur||addD(w.ini,j)<iso(new Date())),q=(w.pd&&w.pd[j])||[0,0],seg=[];
+if(Array.isArray(v)){[0,1].forEach(function(z){if(v[z])seg.push({t:String(v[z]),p:q[z]});else if(cl)seg.push({t:"X",x:1});else seg.push({t:"-"})});if(seg[0].t=="-"&&seg[1].t=="-")seg=[]}
+else if(v)seg.push({t:String(v)});else if(cl)seg.push({t:"X",x:1});
+if(seg.length){var gap=seg.length>1?7:0,tot2=gap,sx;seg.forEach(function(s){tot2+=tw(s.t,fs,s.x)});sx=xs[2+j]+(cw[2+j]-tot2)/2;
+seg.forEach(function(s,k){var wd=tw(s.t,fs,s.x);if(s.t!="-")P.txt(sx,by,s.t,fs,s.x?1:0,s.x?RD:[0,0,0]);if(s.p)P.line(sx-.5,by-2,sx+wd+.5,by-2,GR,.6);sx+=wd+(k==0?gap:0)});if(seg.length>1)P.txt(xs[2+j]+(cw[2+j]-tot2)/2+tw(seg[0].t,fs,seg[0].x)+1.5,by,"·",fs,0,GR)}});
+cen(9,String(L),by,fs,0);cen(10,f2(g),by,fs,0);cen(11,f2(A),by,fs,0);cen(12,f2(g-A),by,fs,1,g-A<0?RD:[0,0,0]);
+if(pw)P.line(M,by-2.5,XE,by-2.5,GR,.7);y+=rh});
+xs.concat([XE]).forEach(function(vx){P.line(vx,y0-16,vx,y,LG,.3)});
+P.rect(M,y,XE-M,rh,[240,232,222]);P.txt(xs[0]+2,y+12,"TOTAL PENDIENTE",7.5,1);cen(9,String(t.TL),y+12,7.5,1);cen(10,f2(t.TG),y+12,7.5,1);cen(11,f2(t.TA),y+12,7.5,1);cen(12,f2(f),y+12,7.5,1);y+=rh+26;
+if(np){P.txt(M,y,"Libre por pagar",10,0,GR);P.txt(M,y+26,"L. "+f2(f),24,1,f<0?RD:GN)}else P.txt(M,y+4,"Todo pagado - sin saldo pendiente",14,1,GN);
+pieDePag(P);return P.out()}
+function fn(s){return String(s||"").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-+|-+$/g,"")}
+async function entregar(blob,name,sh){
+if(sh){try{var f=new File([blob],name,{type:blob.type});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:name});return""}}catch(e){if(e&&e.name=="AbortError")return""}}
+if(window.claude){try{var d=await claude.use("downloads");if(d){await d.save({filename:name,data:blob});return""}}catch(e){}}
+try{var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},2000);return sh?"Este teléfono no permite compartir directo. El archivo se descargó: búscalo en Descargas y envíalo desde ahí.":"Archivo descargado. Búscalo en Descargas."}catch(e){return"No se pudo guardar el archivo."}}
+function say(p){p.then(function(m){if(m)alert(m)})}
+function pb(u){return new Blob([u],{type:"application/pdf"})}
+function pdfP(sh){say(entregar(pb(planillaPdf(S.c.filter(function(c){return!emp(c)}),S.pre,S.ini,false)),"planilla-"+S.ini+".pdf",sh))}
+function pdfH(i,sh){var w=S.h[i];say(entregar(pb(planillaPdf(w.c,w.pre,w.ini,true)),"planilla-"+(w.ini||"sin-fecha")+".pdf",sh))}
+function pdfE(sh){var r=mkRec(SEL);say(entregar(pb(estadoPdf(r)),"estado-cuenta-"+fn(r.n)+(r.nom?"-"+fn(r.nom):"")+".pdf",sh))}
+function pdfR(i,sh){var r=S.pg[i];say(entregar(pb(estadoPdf(r)),"pago-"+fn(r.n)+(r.nom?"-"+fn(r.nom):"")+".pdf",sh))}
 pre.oninput=function(){S.pre=+this.value||0;if(V=="p"){calc();setPh("☕ Planilla de corteros · Semana del "+wl(S.ini)+" · Precio por libra: "+m(S.pre))}else if(SEL!=null)calc();else save()};
 load();showLock();render();
 if("serviceWorker" in navigator&&location.protocol.indexOf("http")==0)navigator.serviceWorker.register("sw.js").catch(function(){});
