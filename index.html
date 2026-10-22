@@ -54,6 +54,7 @@ textarea{width:100%;min-height:90px;padding:9px;border:1px solid var(--br);borde
 @media print{td.xd input{display:none}td.x1::before{content:"✕";font-weight:900}#lk{display:none!important}}
 td.px,td.px input,.pxi,.sk{text-decoration:line-through;text-decoration-thickness:1px;color:var(--mut)}
 @media print{tr.er{display:none}}
+input[readonly]{opacity:.85;border-style:dashed}
 </style></head><body>
 <div id="lk"><div class="card"><h2>🔒 Planilla de Corteros</h2><input id="lkp" type="password" inputmode="numeric" placeholder="Clave" onkeydown="if(event.key=='Enter')unlock()" style="margin-bottom:8px;text-align:center"><div id="lke" class="bad" style="min-height:20px;margin-bottom:6px"></div><button onclick="unlock()" style="width:100%">Entrar</button></div></div>
 <h1>☕ Planilla de Corteros</h1>
@@ -124,11 +125,24 @@ if(!L.length){el.innerHTML='<div class="card">No existe el cortero «'+esc(q.val
 if(L.length>1){el.innerHTML='<div class="card"><label>Varios resultados, elige uno:</label>'+L.slice(0,12).map(function(i){return'<button class="s p" style="margin:3px" onclick="sel('+i+')">'+esc(S.c[i].n)+' · '+esc(S.c[i].nom||"sin nombre")+'</button>'}).join("")+'</div>';return}
 sel(L[0])}
 function sel(i){SEL=i;document.getElementById("mn").innerHTML=ficha(i);calc()}
-function addN(){var n=q.value.trim(),i=-1;S.c.forEach(function(c,k){if(i<0&&emp(c))i=k});if(i<0){S.c.push(nuevo());i=S.c.length-1}S.c[i].n=n;save();fichaView()}
+function chg(i,k,el){var c=S.c[i],nv=el.value.trim(),ov=c[k]||"",lab=k=="n"?"el número":"el nombre",msg,j;
+if(nv==ov){el.value=ov;return}
+if(k=="n"&&nv){for(j=0;j<S.c.length;j++)if(j!=i&&key(S.c[j].n)==key(nv)){alert("El número «"+nv+"» ya está en la casilla "+(j+1)+" ("+(S.c[j].nom||"sin nombre")+"). No se puede repetir.");el.value=ov;return}}
+if(!ov)msg="¿Guardar "+lab+" «"+nv+"» en la casilla "+(i+1)+"?";
+else if(!nv)msg="¿Borrar "+lab+" «"+ov+"» de la casilla "+(i+1)+"?";
+else msg="¿Cambiar "+lab+" de «"+ov+"» a «"+nv+"»?";
+if(k=="n"&&ov)msg+="\n\nOjo: el historial de semanas anteriores queda ligado al número anterior («"+ov+"»).";
+if(!confirm(msg)){el.value=ov;return}
+el.value=nv;
+if(k=="n"&&ov&&nv&&(sum(c)>0||adel(c)>0)&&confirm("Esta casilla tiene pesas o adelantos de esta semana del N° "+ov+".\n\nAceptar = borrarlos, porque ahora es otra persona.\nCancelar = dejarlos (solo estás corrigiendo el número).")){c.d=nuevo().d;c.a="";delete c.px;delete c.an;delete c.ah;HM=null;set(i,k,nv);render();return}
+set(i,k,nv)}
+function addN(){var n=q.value.trim(),i=-1;if(!n)return;S.c.forEach(function(c,k){if(i<0&&emp(c))i=k});if(i<0){S.c.push(nuevo());i=S.c.length-1}
+if(!confirm("¿Guardar el número «"+n+"» en la casilla "+(i+1)+"? El nombre lo escribes en la Planilla."))return;
+S.c[i].n=n;save();V="p";render();setTimeout(function(){var r=document.querySelector("tr[data-i='"+i+"'] td.nm input");if(r){r.scrollIntoView({block:"center"});r.focus()}},60)}
 function ficha(i){var c=S.c[i],T=toks(c),an=Math.min(c.an||0,T.length),any=false;(c.px||[]).forEach(function(q){if(q[0]||q[1])any=true});
 var h='<div class="card"><div class="top"><b>Ficha · Semana del '+wl(S.ini)+'</b><button class="s" onclick="del('+i+')">Quitar</button></div>'+(any?'<div class="ban">Lo tachado ya fue pagado.</div>':'')+
-'<div class="row"><div style="flex:.5"><label>N°</label><input value="'+esc(c.n)+'" inputmode="numeric" oninput="set('+i+',\'n\',this.value)"></div>'+
-'<div><label>Nombre(s) — puede ser un grupo</label><input value="'+esc(c.nom)+'" oninput="set('+i+',\'nom\',this.value)"></div></div>'+
+'<div class="row"><div style="flex:.5"><label>N° (solo se cambia en la Planilla)</label><input value="'+esc(c.n)+'" readonly></div>'+
+'<div><label>Nombre(s) (solo se cambia en la Planilla)</label><input value="'+esc(c.nom)+'" readonly></div></div>'+
 '<label style="margin-top:8px">Libras por día (pesa 1 y pesa 2)</label><div class="days">';
 c.d.forEach(function(v,j){h+='<div><label>'+D[j]+' '+pd(addD(S.ini,j)).getDate()+'</label><div class="dd">'+pin(i,j,0,v[0],Xs(c.d,0,S.ini,j),pdf(c,j,0))+pin(i,j,1,v[1],Xs(c.d,1,S.ini,j),pdf(c,j,1))+'</div></div>'});
 h+='</div><div class="row"><div><label>Adelantos de la semana (ej: 100+200)</label><input value="'+esc(c.a)+'" oninput="set('+i+',\'a\',this.value)"></div></div>'+
@@ -168,7 +182,7 @@ D.forEach(function(d,j){h+='<th colspan="2">'+d+(ini?'<br>'+pd(addD(ini,j)).getD
 h+='<th rowspan="2">Libras</th><th rowspan="2">Ganado</th><th rowspan="2">Adelantos</th><th rowspan="2">Total adel.</th><th rowspan="2">Libre</th>'+(ed?'<th rowspan="2" class="noprint"></th>':'')+'</tr><tr>';
 D.forEach(function(){h+='<th>1</th><th>2</th>'});h+='</tr></thead><tbody>';
 L.forEach(function(c,i){var r=rowv(c,p);h+='<tr'+(emp(c)?' class="er"':'')+' data-i="'+i+'" data-n="'+esc(key(c.n))+'" data-q="'+esc(c.nom.toLowerCase())+'"><td>'+(i+1)+'</td>';
-h+=ed?'<td class="nu"><input value="'+esc(c.n)+'" oninput="set('+i+',\'n\',this.value)"></td><td class="nm"><input value="'+esc(c.nom)+'" oninput="set('+i+',\'nom\',this.value)"></td>':'<td>'+esc(c.n)+'</td><td class="nm">'+esc(c.nom)+'</td>';
+h+=ed?'<td class="nu"><input value="'+esc(c.n)+'" onchange="chg('+i+',\'n\',this)"></td><td class="nm"><input value="'+esc(c.nom)+'" onchange="chg('+i+',\'nom\',this)"></td>':'<td>'+esc(c.n)+'</td><td class="nm">'+esc(c.nom)+'</td>';
 c.d.forEach(function(v,j){var x0=Xs(c.d,0,ini,j,!ed),x1=Xs(c.d,1,ini,j,!ed),p0=pdf(c,j,0),p1=pdf(c,j,1);
 h+=ed?'<td'+tc(x0,p0)+'>'+pin(i,j,0,v[0],x0,p0)+'</td><td'+tc(x1,p1)+'>'+pin(i,j,1,v[1],x1,p1)+'</td>':(x0?'<td class="xc"><span class="xm">✕</span></td>':'<td'+tc(0,p0)+'>'+(v[0]||"")+'</td>')+(x1?'<td class="xc"><span class="xm">✕</span></td>':'<td'+tc(0,p1)+'>'+(v[1]||"")+'</td>')});
 h+=ed?'<td id="l'+i+'"></td><td id="g'+i+'"></td><td class="ad"><input value="'+esc(c.a)+'" oninput="set('+i+',\'a\',this.value)"></td><td id="a'+i+'"></td><td id="f'+i+'"></td><td class="noprint"><button class="s" onclick="del('+i+')">✕</button></td>':
